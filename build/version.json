@@ -12,8 +12,8 @@ function bumpVersion(releaseType = 'patch') {
 
     let content = fs.readFileSync(filePath, 'utf8');
     
-    // Regex to find: private const string APP_VERSION = "1.0.2";
-    const versionRegex = /private const string APP_VERSION = "(\d+)\.(\d+)\.(\d+)";/;
+    // Regex to find: public const string APP_VERSION = "1.0.3";
+    const versionRegex = /(?:public|private) const string APP_VERSION = "(\d+)\.(\d+)\.(\d+)";/;
     const match = content.match(versionRegex);
     
     if (match) {
@@ -31,7 +31,7 @@ function bumpVersion(releaseType = 'patch') {
         }
         
         const newVersion = `${major}.${minor}.${patch}`;
-        content = content.replace(versionRegex, `private const string APP_VERSION = "${newVersion}";`);
+        content = content.replace(versionRegex, `public const string APP_VERSION = "${newVersion}";`);
         
         fs.writeFileSync(filePath, content, 'utf8');
         console.log(`✅ Successfully bumped APP_VERSION to ${newVersion} in MainWindow.xaml.cs`);
